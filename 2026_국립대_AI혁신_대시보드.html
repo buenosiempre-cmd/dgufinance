@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 국립대 AI 혁신 사례 분석 — 동국대 재무팀 보완 제안</title>
+<style>
+  :root {
+    --primary: #c8102e;
+    --primary-dark: #8b0a1f;
+    --secondary: #f4a900;
+    --accent: #2c3e50;
+    --bg: #fafbfc;
+    --card-bg: #ffffff;
+    --border: #e5e7eb;
+    --text: #1a1a1a;
+    --text-light: #5a5a5a;
+    --text-muted: #8a8a8a;
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --info: #2563eb;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Pretendard', 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 36px 24px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-md);
+  }
+  header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
+  header .subtitle { font-size: 15px; opacity: 0.9; margin-bottom: 4px; }
+  header .meta { font-size: 13px; opacity: 0.75; margin-top: 12px; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--border);
+    overflow-x: auto;
+  }
+  .tab {
+    padding: 12px 20px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-light);
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .tab:hover { color: var(--text); background: rgba(0,0,0,0.02); }
+  .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* KPI Grid */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .kpi-card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .kpi-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; font-weight: 600; }
+  .kpi-value { font-size: 28px; font-weight: 700; color: var(--accent); }
+  .kpi-sub { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+
+  /* Section */
+  .section {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section h2 .num {
+    background: var(--primary);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .section h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-top: 20px;
+    margin-bottom: 12px;
+  }
+  .section p { margin-bottom: 12px; color: var(--text); }
+  .section ul, .section ol { margin-left: 20px; margin-bottom: 12px; }
+  .section li { margin-bottom: 6px; }
+
+  /* Filter */
+  .filter-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-bar input, .filter-bar select {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+    background: white;
+  }
+  .filter-bar input { flex: 1; min-width: 200px; }
+  .filter-bar input:focus, .filter-bar select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  /* University Cards */
+  .uni-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 16px;
+  }
+  .uni-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    transition: all 0.2s;
+    box-shadow: var(--shadow);
+  }
+  .uni-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .uni-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .uni-name { font-size: 16px; font-weight: 700; color: var(--accent); }
+  .uni-budget { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .priority {
+    background: var(--primary);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .priority-3 { background: #dc2626; }
+  .priority-2 { background: #f59e0b; }
+  .priority-1 { background: #6b7280; }
+  .uni-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+  .tag {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    background: #eff6ff;
+    color: #1e40af;
+    font-weight: 600;
+  }
+  .tag.fin { background: #fef3c7; color: #92400e; }
+  .tag.gov { background: #dbeafe; color: #1e40af; }
+  .tag.edu { background: #d1fae5; color: #065f46; }
+  .tag.infra { background: #ede9fe; color: #5b21b6; }
+  .tag.auto { background: #fce7f3; color: #9d174d; }
+  .uni-desc { font-size: 13px; color: var(--text-light); line-height: 1.55; }
+  .uni-key { font-size: 12px; color: var(--text); margin-top: 8px; padding: 8px 10px; background: #fef9f0; border-left: 3px solid var(--secondary); border-radius: 4px; }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 13px;
+  }
+  th {
+    background: #f1f5f9;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 700;
+    color: var(--accent);
+    border-bottom: 2px solid var(--border);
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:hover { background: #fafbfc; }
+
+  /* Proposal Cards */
+  .proposal-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .proposal-card h4 {
+    font-size: 16px;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .proposal-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+    flex-wrap: wrap;
+  }
+  .meta-item { display: flex; align-items: center; gap: 4px; }
+  .meta-item strong { color: var(--accent); }
+
+  /* Comparison */
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 100px;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    align-items: center;
+  }
+  .compare-header {
+    font-weight: 700;
+    color: var(--accent);
+    background: #f1f5f9;
+    padding: 12px;
+    border-radius: 6px 6px 0 0;
+  }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+  }
+  .badge-good { background: #d1fae5; color: #065f46; }
+  .badge-warn { background: #fef3c7; color: #92400e; }
+  .badge-info { background: #dbeafe; color: #1e40af; }
+
+  /* Highlight box */
+  .highlight {
+    background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
+    border-left: 4px solid var(--secondary);
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+  .highlight strong { color: var(--primary-dark); }
+
+  .danger {
+    background: #fef2f2;
+    border-left: 4px solid #dc2626;
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+
+  /* Dongguk specific */
+  .dongguk-section {
+    background: linear-gradient(135deg, #fef3c7 0%, #fce7f3 100%);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+  .dongguk-section h3 { color: var(--primary-dark); }
+
+  .innovation-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .innovation-item {
+    background: white;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .innovation-item .label { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+  .innovation-item .value { font-size: 14px; font-weight: 600; margin-top: 4px; color: var(--accent); }
+  .status { font-size: 11px; padding: 2px 8px; border-radius: 10px; margin-top: 6px; display: inline-block; }
+  .status.done { background: #d1fae5; color: #065f46; }
+  .status.now { background: #fee2e2; color: #991b1b; }
+  .status.partial { background: #fef3c7; color: #92400e; }
+  .status.plan { background: #dbeafe; color: #1e40af; }
+
+  footer {
+    margin-top: 40px;
+    padding: 20px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 768px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .uni-grid { grid-template-columns: 1fr; }
+    .innovation-grid { grid-template-columns: 1fr; }
+    .compare-row { grid-template-columns: 1fr; gap: 4px; }
+    header h1 { font-size: 22px; }
+  }
+
+  @media print {
+    .tabs { display: none; }
+    .tab-content { display: block !important; page-break-after: always; }
+    .filter-bar { display: none; }
+    body { background: white; }
+    .section, .uni-card { box-shadow: none; border: 1px solid #ccc; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>2026 국립대학교 AI 혁신 사례 분석</h1>
+  <div class="subtitle">동국대학교 재무팀 「AI시대, 일하는 방식의 변화」 보완·확장 제안</div>
+  <div class="meta">분석 대상: 25개 국립대 정부혁신 실행계획 PDF 전수 검토 · 작성: 2026.5.15.</div>
+</header>
+
+<!-- KPI Summary -->
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-label">분석 대학 수</div>
+    <div class="kpi-value">25<span style="font-size:14px;color:var(--text-muted);">개교</span></div>
+    <div class="kpi-sub">거점국립대 8 + 특수목적 8 + 통합대 2 + 교대 7</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">재무·회계 직접 적용</div>
+    <div class="kpi-value">10<span style="font-size:14px;color:var(--text-muted);">건</span></div>
+    <div class="kpi-sub">RPA, 챗봇, 자가점검 체크리스트 등</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">동국대 즉시 도입 제안</div>
+    <div class="kpi-value">7<span style="font-size:14px;color:var(--text-muted);">건</span></div>
+    <div class="kpi-sub">모두 추가 예산 0원 또는 기존 범위 내</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">동국대 도구 진영</div>
+    <div class="kpi-value">상위 5%</div>
+    <div class="kpi-sub">Slack+MD+Notion+Claude 풀스택</div>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <button class="tab active" data-tab="summary">📊 핵심 요약</button>
+  <button class="tab" data-tab="universities">🏫 25개 대학 사례</button>
+  <button class="tab" data-tab="trends">📈 7대 유형·트렌드</button>
+  <button class="tab" data-tab="finance">💰 재무·회계 직접 적용</button>
+  <button class="tab" data-tab="dongguk">🎯 동국대 비교 진단</button>
+  <button class="tab" data-tab="proposals">💡 보완 제안 7가지</button>
+  <button class="tab" data-tab="kpi">🎯 권장 KPI 표</button>
+</div>
+
+<!-- Tab 1: Summary -->
+<div class="tab-content active" id="summary">
+  <div class="section">
+    <h2><span class="num">1</span>핵심 발견 5가지</h2>
+    <ol style="margin-left: 24px; line-height: 1.9;">
+      <li><strong>25개 국립대 모두 "AI 행정 전환"을 정부혁신 핵심 축으로 채택</strong>했고, 5개 거점국립대(전남·전북·부산·경북·충남)는 평균 10억 원 이상의 예산을 투입.</li>
+      <li><strong>재무·회계 분야 직접 적용 사례는 의외로 풍부.</strong> 전남대 RPA(등록금 수납 166.7시간 절감), 전북대 AI 데이터 감사(이상징후 사전 탐지 90%), 부경대 청렴·감사 챗봇(예산·계약·회계 자가점검), 충남대 등록금 24시간 디지털 반환, 경상대 '직원이 직접 만드는 예산·규정 챗봇' 등.</li>
+      <li><strong>동국대 재무팀의 4대 혁신 영역(소통·지식·정보공유·AI활용)은 이미 국립대 평균을 2~3년 앞선 수준.</strong> 다만 거버넌스 문서화·정량 KPI·챗봇 가시화 측면에서 보완 여지.</li>
+      <li><strong>Best Practice 5선</strong>: ① 부산대 'AI 마에스트로'(직원이 AI 에이전트 직접 개발), ② 전남대 'RPA 정량 시간절감 KPI', ③ 공주교대 '무예산 공문서 AI 교정', ④ 경상대 '지식 아카이브'(우수 프롬프트 공유), ⑤ 부경대 'AI 청렴·감사 자가점검 체크리스트'.</li>
+      <li><strong>동국대 재무팀이 즉시 반영 가능한 7가지 신규 아이디어</strong>를 본 분석에서 제안. 모두 현 6,080천원 예산 범위 내 시범 가능.</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">2</span>한눈에 보는 인사이트 매트릭스</h2>
+    <div style="overflow-x:auto;">
+    <table>
+      <thead>
+        <tr>
+          <th>관점</th>
+          <th>국립대 평균</th>
+          <th>대표 모범사례</th>
+          <th>동국대 재무팀 위치</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>AI 도구 도입</strong></td>
+          <td>ChatGPT 단체구독 多</td>
+          <td>전남대 8종 무료(12억), 전주교대 멀티LLM 90%↓</td>
+          <td><span class="badge badge-good">앞섬 (Claude 풀스택)</span></td>
+        </tr>
+        <tr>
+          <td><strong>지식 형식</strong></td>
+          <td>HWP/PDF 매뉴얼</td>
+          <td>창원대 EHKO, 경상대 지식아카이브</td>
+          <td><span class="badge badge-good">앞섬 (마크다운+Obsidian)</span></td>
+        </tr>
+        <tr>
+          <td><strong>소통 채널</strong></td>
+          <td>카톡·게시판</td>
+          <td>(거의 모든 대학이 미진)</td>
+          <td><span class="badge badge-good">2~3년 앞섬 (Slack)</span></td>
+        </tr>
+        <tr>
+          <td><strong>정보 공유</strong></td>
+          <td>그룹웨어·메일</td>
+          <td>전남대 차세대 통합정보시스템</td>
+          <td><span class="badge badge-good">앞섬 (Notion)</span></td>
+        </tr>
+        <tr>
+          <td><strong>거버넌스 문서</strong></td>
+          <td>일부만 표준화</td>
+          <td>부산대 정책표준 3단(헌장+가이드+매뉴얼)</td>
+          <td><span class="badge badge-warn">보완 필요</span></td>
+        </tr>
+        <tr>
+          <td><strong>정량 KPI</strong></td>
+          <td>대부분 미명시</td>
+          <td>전남대 1,565h↓, 공주교대 66%↓</td>
+          <td><span class="badge badge-warn">보완 필요</span></td>
+        </tr>
+        <tr>
+          <td><strong>챗봇·에이전트</strong></td>
+          <td>학사·민원 챗봇 多</td>
+          <td>경상대 직원 1인 1챗봇, 부경대 sLLM 규정집</td>
+          <td><span class="badge badge-warn">가시화 필요</span></td>
+        </tr>
+        <tr>
+          <td><strong>재무·회계 모듈</strong></td>
+          <td>거의 부재</td>
+          <td>부경대 예산·계약 자가점검, 전남대 등록금 RPA</td>
+          <td><span class="badge badge-info">확장 가능</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- Tab 2: Universities -->
+<div class="tab-content" id="universities">
+  <div class="section">
+    <h2><span class="num">🏫</span>25개 국립대 AI 행정 사례</h2>
+    <div class="filter-bar">
+      <input type="text" id="search" placeholder="🔍 대학명·과제명·키워드 검색..." />
+      <select id="filter-priority">
+        <option value="all">전체 우선순위</option>
+        <option value="3">★★★ (재무팀 1순위)</option>
+        <option value="2">★★ (참고 권장)</option>
+        <option value="1">★ (참고)</option>
+      </select>
+      <select id="filter-tag">
+        <option value="all">전체 분야</option>
+        <option value="fin">재무·회계</option>
+        <option value="auto">행정 자동화</option>
+        <option value="edu">교육·역량</option>
+        <option value="gov">거버넌스</option>
+        <option value="infra">인프라</option>
+      </select>
+    </div>
+    <div class="uni-grid" id="uni-grid"></div>
+  </div>
+</div>
+
+<!-- Tab 3: Trends -->
+<div class="tab-content" id="trends">
+  <div class="section">
+    <h2><span class="num">3</span>7대 유형별 사례 매핑</h2>
+
+    <h3>① AI 도구 도입 모델 — "어떻게 살 것인가"</h3>
+    <table>
+      <thead><tr><th>모델</th><th>대표 대학</th><th>핵심</th></tr></thead>
+      <tbody>
+        <tr><td><strong>단체 구독 (정액제)</strong></td><td>부산교대</td><td>직원 83명 1인당 252천원/년, 활용범위에 "예산·통계 자료 초안" 명시</td></tr>
+        <tr><td><strong>멀티 LLM + 종량제</strong></td><td>전주교대(팩트챗)</td><td>9개 LLM 통합 + 비용 90% 절감</td></tr>
+        <tr><td><strong>일괄 라이선스</strong></td><td>부산대</td><td>Google AI Pro 28,000명 21.8억</td></tr>
+        <tr><td><strong>8종 무료 보편</strong></td><td>전남대</td><td>"AI for All @CNU" 12억, 직원 활용률 98.1%</td></tr>
+        <tr><td><strong>국산 AI 포함</strong></td><td>경북대</td><td>+Solar 9.5억, "K-AI First Campus"</td></tr>
+        <tr><td><strong>자체 sLLM 비예산</strong></td><td>부경대</td><td>경량 LLM 규정집 챗봇, 비예산</td></tr>
+      </tbody>
+    </table>
+    <div class="highlight"><strong>인사이트:</strong> 동국대 재무팀처럼 부서 단위 시범에는 종량제(크레딧)가 예산 통제·예측가능성 측면에서 유리.</div>
+
+    <h3>② 교육·역량 강화 모델 — "어떻게 가르칠 것인가"</h3>
+    <table>
+      <thead><tr><th>모델</th><th>대학</th><th>핵심</th></tr></thead>
+      <tbody>
+        <tr><td><strong>AI 마에스트로 ★★★</strong></td><td>부산대</td><td>행정직원 21명, 바이브 코딩으로 AI 에이전트 직접 개발 → 부서당 1건 이상 자동화</td></tr>
+        <tr><td><strong>AX 직무역량</strong></td><td>창원대</td><td>VBA·md·Text-to-SQL 바이브코딩, 스터디 10팀×100만</td></tr>
+        <tr><td><strong>5단계 + 지식 아카이브</strong></td><td>경상대</td><td>기초→초급→중급→고급→워크숍, 우수 프롬프트 공유</td></tr>
+        <tr><td><strong>전 직원 의무 이수</strong></td><td>경북대 외</td><td>연 2시간, '지능형 법령·규정 검색' 모듈 명시</td></tr>
+        <tr><td><strong>6급 이하 타깃</strong></td><td>충북대</td><td>공문 초안 생성 프롬프트 실습 + 평가·피드백 사이클</td></tr>
+        <tr><td><strong>중간 실무자(7~8급)</strong></td><td>순천대</td><td>전파 교육 체계, 36.4백만</td></tr>
+        <tr><td><strong>시간 단축 KPI 명시</strong></td><td>공주교대</td><td>공문 120→40분(66%↓), 657만</td></tr>
+        <tr><td><strong>외부 위탁</strong></td><td>서울과기대</td><td>서울대 대학행정교육원 ChatGPT 과정</td></tr>
+        <tr><td><strong>찾아가는 컨설팅</strong></td><td>춘천교대</td><td>학과·부서 수요 맞춤 출장</td></tr>
+      </tbody>
+    </table>
+
+    <h3>③ 행정 자동화·챗봇 모델 (★ 재무팀 직결)</h3>
+    <table>
+      <thead><tr><th>모델</th><th>대학</th><th>핵심</th></tr></thead>
+      <tbody>
+        <tr><td><strong>AI&RPA 오토메이션 ★★★</strong></td><td>전남대</td><td>「행정효율화위원회」, 4분면 ROI 평가, 등록금 수납 166.7h↓, 연 1,565h↓ KPI</td></tr>
+        <tr><td><strong>AI 데이터 감사 ★★★</strong></td><td>전북대</td><td>업무추진비·계약업체 편중 등 위험지표 + 이상징후 탐지 90%</td></tr>
+        <tr><td><strong>연구비 AI 패턴 분석</strong></td><td>전북대 JUIC</td><td>수기 처리 80%→10%</td></tr>
+        <tr><td><strong>청렴·감사 챗봇 + 자가점검</strong></td><td>부경대</td><td>예산·계약·회계 분야 체크리스트, 1,000천원</td></tr>
+        <tr><td><strong>AI 챗봇 3단 로드맵</strong></td><td>충북대</td><td>'26 대표홈→'27 입시·학사→'28 행정업무 챗봇</td></tr>
+        <tr><td><strong>공문서 서술어 교정</strong></td><td>공주교대</td><td>무예산, 페르소나+평어→격식체, 공문 수정 80%↓</td></tr>
+        <tr><td><strong>개인 업무용 챗봇</strong></td><td>경상대</td><td>직원이 예산·규정·기안 챗봇 제작 → 지식아카이브 등재(연 10건)</td></tr>
+        <tr><td><strong>요청서·인사배치 자동화</strong></td><td>서울과기대</td><td>iSSR·인사배치 등 4종, AES-256+DLP 보안</td></tr>
+        <tr><td><strong>위원회 회의록 정리</strong></td><td>한경대</td><td>회의록·찬반·쟁점·후속조치 자동화</td></tr>
+        <tr><td><strong>코딩없이 챗봇 제작</strong></td><td>한국교통대</td><td>로우코드 + 권한·크레딧 관리</td></tr>
+      </tbody>
+    </table>
+
+    <h3>④ 핵심 트렌드 6가지</h3>
+    <ol style="margin-left:24px; line-height:1.9;">
+      <li><strong>"행정 챗봇" 단계 확산</strong>: 단순 안내 챗봇 → 학사·민원 → 행정업무·예산회계 챗봇 진화</li>
+      <li><strong>"개인 챗봇" 시대 도래</strong>: 직원 1인이 자기 업무용 챗봇 직접 제작, 학내 공유</li>
+      <li><strong>정량 KPI(시간 절감) 일반화</strong>: 시간 절감을 사업 성공 기준으로 채택</li>
+      <li><strong>"AX 전략 명문화" 흐름</strong>: "행·재정 자동화" 등 거버넌스 문서 등장</li>
+      <li><strong>무예산·비예산 사례 풍부</strong>: 돈 없이도 시작 가능한 모델 다수</li>
+      <li><strong>윤리·보안 가이드라인 표준화</strong>: '민감정보 입력 금지' 원칙은 거의 모든 대학 채택</li>
+    </ol>
+  </div>
+</div>
+
+<!-- Tab 4: Finance Direct -->
+<div class="tab-content" id="finance">
+  <div class="section">
+    <h2><span class="num">💰</span>재무·회계 직접 적용 사례 (★★★ 재무팀 1순위)</h2>
+    <p style="color:var(--text-light);">25개 국립대에서 추출한 <strong>재무·회계·예산·계약·자산관리·세무</strong> 분야에 AI를 직접 적용한 10개 사례.</p>
+    <table>
+      <thead>
+        <tr><th>사례</th><th>대학</th><th>분야</th><th>핵심 시사점</th><th>예산</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>등록금 수납 RPA</strong></td>
+          <td>전남대 재무과</td>
+          <td>회계·자동화</td>
+          <td>연간 166.7시간 절감 정량화, 2026년 12개 RPA 과제로 확대</td>
+          <td>3.5억(사업 전체)</td>
+        </tr>
+        <tr>
+          <td><strong>등록금 24h 디지털 반환</strong></td>
+          <td>충남대</td>
+          <td>회계</td>
+          <td>학생포털 24h 신청 + 학적 데이터 자동 검증 + 실시간 조회</td>
+          <td><span class="badge badge-good">비예산</span></td>
+        </tr>
+        <tr>
+          <td><strong>연구비 집행 AI 부적정 탐지</strong></td>
+          <td>전북대 JUIC</td>
+          <td>연구재무</td>
+          <td>CMS 연계, 전자결재, 부적정 탐지율 90%</td>
+          <td>938백만</td>
+        </tr>
+        <tr>
+          <td><strong>연구비 전자결재</strong></td>
+          <td>경북대</td>
+          <td>연구재무</td>
+          <td>산단회계 직접비/간접비 전 단계 전자화</td>
+          <td>1억</td>
+        </tr>
+        <tr>
+          <td><strong>AI 청렴·감사 챗봇 + 자가점검</strong></td>
+          <td>부경대</td>
+          <td>감사·내부통제</td>
+          <td><strong>예산·계약·회계 분야 체크리스트</strong> 명시</td>
+          <td>1,000천원</td>
+        </tr>
+        <tr>
+          <td><strong>AI 성과관리 + 미달성 예측 알림</strong></td>
+          <td>충남대</td>
+          <td>예산·성과</td>
+          <td>자연어 프롬프트 비정형 분석(Text-to-SQL)</td>
+          <td>3.8억</td>
+        </tr>
+        <tr>
+          <td><strong>국유재산 GIS·드론 DB</strong></td>
+          <td>전북대 재무과</td>
+          <td>자산관리</td>
+          <td>무단점유 조치 37→45건, 사용허가 10% 확대</td>
+          <td>230백만</td>
+        </tr>
+        <tr>
+          <td><strong>불용 PC 재활용</strong></td>
+          <td>한경대</td>
+          <td>자산관리·ESG</td>
+          <td>30대 SSD 교체·재기증, 신규 80% 비용 절감</td>
+          <td>3,000천원</td>
+        </tr>
+        <tr>
+          <td><strong>회계자료 수기→시스템</strong></td>
+          <td>공주교대</td>
+          <td>연구재무</td>
+          <td>산학연구시스템 회계 자동화</td>
+          <td>54백만</td>
+        </tr>
+        <tr>
+          <td><strong>초과근무·출장비 부당수령 점검</strong></td>
+          <td>경국대</td>
+          <td>인사·재무</td>
+          <td>분기별 4회 + KORUS 시스템</td>
+          <td><span class="badge badge-good">비예산</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight">
+      <strong>핵심 인사이트:</strong> 재무 분야 AI 적용 사례는 대부분 ① <strong>RPA 기반 반복 업무 자동화</strong>(전남대 등록금 수납), ② <strong>이상 패턴 탐지</strong>(전북대 데이터 감사), ③ <strong>자가점검 체크리스트 + 챗봇</strong>(부경대) 3가지 패턴으로 수렴. 동국대 재무팀의 2025 성과(<strong>장기 채권·채무 상시점검</strong>)는 이미 ③ 패턴의 초기 단계에 진입한 상태.
+    </div>
+  </div>
+</div>
+
+<!-- Tab 5: Dongguk Compare -->
+<div class="tab-content" id="dongguk">
+  <div class="section">
+    <h2><span class="num">🎯</span>동국대 재무팀 현재 위치</h2>
+
+    <h3>2026 중점업무 「AI시대, 재무팀 일하는 방식의 혁신」 4대 영역</h3>
+    <div class="innovation-grid">
+      <div class="innovation-item">
+        <div class="label">소통 방식 혁신</div>
+        <div class="value">카톡 → Slack</div>
+        <span class="status done">✓ 전환 완료</span>
+      </div>
+      <div class="innovation-item">
+        <div class="label">지식 관리 혁신</div>
+        <div class="value">HWP/PPT/PDF → Markdown + Obsidian</div>
+        <span class="status now">🔥 올해 핵심</span>
+      </div>
+      <div class="innovation-item">
+        <div class="label">정보 공유 혁신</div>
+        <div class="value">GW/메일/nDRIMS → Notion Workspace</div>
+        <span class="status partial">◐ 일부 운영</span>
+      </div>
+      <div class="innovation-item">
+        <div class="label">AI 활용 혁신</div>
+        <div class="value">매뉴얼 탐색 → Claude 자동검색·답변초안</div>
+        <span class="status plan">🧪 시범 예정</span>
+      </div>
+    </div>
+
+    <h3>3단계 로드맵</h3>
+    <div style="display:flex; gap:8px; align-items:center; margin:16px 0;">
+      <div style="flex:1; padding:14px; background:#d1fae5; border-radius:8px; text-align:center;">
+        <div style="font-size:11px; color:#065f46; font-weight:700;">DX (3-8월)</div>
+        <div style="font-weight:700; margin-top:4px;">디지털 전환</div>
+        <div style="font-size:11px; margin-top:4px;">마크다운 변환·Slack 정착</div>
+      </div>
+      <div style="font-size:24px; color:var(--primary);">→</div>
+      <div style="flex:1; padding:14px; background:#dbeafe; border-radius:8px; text-align:center;">
+        <div style="font-size:11px; color:#1e40af; font-weight:700;">KX (9-11월)</div>
+        <div style="font-weight:700; margin-top:4px;">지식공유 전환</div>
+        <div style="font-size:11px; margin-top:4px;">Notion 라이브러리·FAQ</div>
+      </div>
+      <div style="font-size:24px; color:var(--primary);">→</div>
+      <div style="flex:1; padding:14px; background:#ede9fe; border-radius:8px; text-align:center;">
+        <div style="font-size:11px; color:#5b21b6; font-weight:700;">AX (12-2월)</div>
+        <div style="font-weight:700; margin-top:4px;">AI 자동화</div>
+        <div style="font-size:11px; margin-top:4px;">AI 도구 연동·답변 자동생성</div>
+      </div>
+    </div>
+
+    <div style="background:white; padding:14px; border-radius:8px; border:1px dashed var(--border); margin-top:16px;">
+      <strong>2026 예산:</strong> <span style="color:var(--primary); font-weight:700;">6,080천원</span>
+      (리스임차료 5,080 + 행정운영비 1,000) — 거점국립대 평균의 약 <strong>0.1%</strong> 수준
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">📊</span>동국대 vs 25개 국립대 포지션 비교</h2>
+    <div class="compare-row compare-header">
+      <div>영역</div>
+      <div>동국대 재무팀</div>
+      <div>국립대 평균</div>
+      <div>평가</div>
+    </div>
+    <div class="compare-row">
+      <div><strong>소통 채널</strong></div><div>Slack 전환 완료</div><div>카톡·게시판 의존</div>
+      <div><span class="badge badge-good">2~3년 앞섬</span></div>
+    </div>
+    <div class="compare-row">
+      <div><strong>지식 형식</strong></div><div>마크다운+Obsidian</div><div>HWP/PDF 매뉴얼</div>
+      <div><span class="badge badge-good">앞섬</span></div>
+    </div>
+    <div class="compare-row">
+      <div><strong>정보 공유</strong></div><div>Notion Workspace</div><div>GW 게시판</div>
+      <div><span class="badge badge-good">앞섬</span></div>
+    </div>
+    <div class="compare-row">
+      <div><strong>AI 도구</strong></div><div>Claude (전문가급)</div><div>ChatGPT 단체구독</div>
+      <div><span class="badge badge-good">앞섬</span></div>
+    </div>
+    <div class="compare-row">
+      <div><strong>3단계 로드맵</strong></div><div>DX→KX→AX 명확</div><div>일부만 명시</div>
+      <div><span class="badge badge-good">앞섬</span></div>
+    </div>
+    <div class="compare-row">
+      <div><strong>거버넌스 문서</strong></div><div>미언급</div><div>부산대·경북대 표준화</div>
+      <div><span class="badge badge-warn">보완 필요</span></div>
+    </div>
+    <div class="compare-row">
+      <div><strong>정량 KPI</strong></div><div>"-" 표기</div><div>전남대 1,565h↓ 등</div>
+      <div><span class="badge badge-warn">보완 필요</span></div>
+    </div>
+    <div class="compare-row">
+      <div><strong>챗봇 가시화</strong></div><div>"답변 초안" 수준</div><div>경상대 1인 1챗봇</div>
+      <div><span class="badge badge-warn">가시화 필요</span></div>
+    </div>
+    <div class="compare-row">
+      <div><strong>재무·회계 모듈</strong></div><div>연말정산 FAQ</div><div>부경대 예산·계약 자가점검</div>
+      <div><span class="badge badge-info">확장 가능</span></div>
+    </div>
+
+    <div class="highlight">
+      <strong>종합 진단:</strong> "DX→KX→AX 로드맵 + Slack/Notion/Obsidian/Claude 풀스택"은 국립대 거점급(전남·전북·부산)과 비교해도 <strong>도구 측면에서 가장 앞선 진영</strong>. 다만 ① 공식 문서화·거버넌스, ② 정량 KPI, ③ 챗봇 가시화에서 거점국립대 모범사례를 흡수할 여지가 크다.
+    </div>
+  </div>
+</div>
+
+<!-- Tab 6: Proposals -->
+<div class="tab-content" id="proposals">
+  <div class="dongguk-section">
+    <h3 style="font-size:18px; margin-bottom:8px;">즉시 반영 권장 7대 아이디어</h3>
+    <p style="color:var(--text-light); font-size:13px;">현 6,080천원 예산 범위 내에서 시범 가능한 수준. 모든 제안은 25개 국립대 실증 사례에 근거.</p>
+  </div>
+
+  <div class="proposal-card">
+    <h4>제안 ① 「재무팀 AI 활용 가이드라인」 1쪽짜리 문서화 (★★★)</h4>
+    <p><strong>벤치마킹:</strong> 부산대 'AI 정책표준' 3단 구조 + 춘천교대 '민감정보 입력 금지' + 경북대 '상용 AI 이용·보안 지침'</p>
+    <p><strong>내용 (1쪽):</strong> 사용 가능 AI 도구 / <strong>금지 데이터 범위(개인정보·계좌·주민번호·연봉·계약 단가 등)</strong> / 환각 검증 의무 / 출처 표기 / 위반 시 처리</p>
+    <div class="proposal-meta">
+      <div class="meta-item">⏱️ <strong>인건시간:</strong> 8~16시간</div>
+      <div class="meta-item">💰 <strong>예산:</strong> 비예산</div>
+      <div class="meta-item">🎯 <strong>효과:</strong> 감사·보안 대응 + 사업 정당화</div>
+    </div>
+  </div>
+
+  <div class="proposal-card">
+    <h4>제안 ② 「시간 절감 KPI」 명시 (★★★)</h4>
+    <p><strong>벤치마킹:</strong> 전남대 RPA 1,565h/년, 공주교대 공문 120→40분(66%↓), 금오공대 50%↓, 한국체대 응답정확도 85%</p>
+    <p><strong>현 보고서 보완:</strong> "2026 결과값 -, 목표값 -" → <strong>"공문/품의 초안 작성 시간 △분→△분 (△% 단축)", "반복 질의 응대 건수 △건/월→△건/월"</strong></p>
+    <p><strong>측정 방법:</strong> 베이스라인 1주(현 소요시간) → 시범 운영 1주(AI 활용 후) → 비교</p>
+    <div class="proposal-meta">
+      <div class="meta-item">⏱️ <strong>인건시간:</strong> 16시간</div>
+      <div class="meta-item">💰 <strong>예산:</strong> 비예산</div>
+      <div class="meta-item">🎯 <strong>효과:</strong> 차년도 예산 확보 근거</div>
+    </div>
+  </div>
+
+  <div class="proposal-card">
+    <h4>제안 ③ 「부서별 1인 1챗봇」 시범 — 경상대 모델 차용 (★★★)</h4>
+    <p><strong>벤치마킹:</strong> 경상대 "직원이 예산 산출·규정 안내·기안 초안 챗봇 직접 제작 → 학내 지식아카이브 등재(연 10건)"</p>
+    <p><strong>재무팀 적용안:</strong> 팀원 N명이 각자 담당 업무 특화 Claude Project/Notion AI 챗봇 1개씩 제작
+      <ul>
+        <li>예: 「연말정산 챗봇」(이미 운영) / 「장기채권채무 챗봇」 / 「리스회계 챗봇」 / 「세무 챗봇」 / 「수입처리 챗봇」</li>
+        <li>Notion에 '재무팀 챗봇 라이브러리' 페이지 신설 → 분기별 우수사례 공유</li>
+      </ul>
+    </p>
+    <div class="proposal-meta">
+      <div class="meta-item">⏱️ <strong>인건시간:</strong> 팀당 분배</div>
+      <div class="meta-item">💰 <strong>예산:</strong> 기존 라이선스 내</div>
+      <div class="meta-item">🎯 <strong>효과:</strong> "AI 활용 혁신"의 가시적 산출물</div>
+    </div>
+  </div>
+
+  <div class="proposal-card">
+    <h4>제안 ④ 「재무 분야 AI 활용 사례집」 분기별 발간 (★★)</h4>
+    <p><strong>벤치마킹:</strong> 한국체대·전남대 'AI 우수 활용사례집·뉴스레터' + 경상대 '지식 아카이브'</p>
+    <p><strong>내용:</strong> 분기당 4~6건 → 1년 16~24건. 각 사례 1쪽: 업무명 + Before/After + 시간 절감 + 활용 프롬프트</p>
+    <p><strong>배포:</strong> Slack 채널 + Notion + 격주 짧은 메일 (총무처 다른 팀에도 공유)</p>
+    <div class="proposal-meta">
+      <div class="meta-item">⏱️ <strong>인건시간:</strong> 분기당 8시간</div>
+      <div class="meta-item">💰 <strong>예산:</strong> 비예산</div>
+      <div class="meta-item">🎯 <strong>효과:</strong> AX플랜 실행 산출물 + 타팀 확산 트리거</div>
+    </div>
+  </div>
+
+  <div class="proposal-card">
+    <h4>제안 ⑤ 「예산·회계 자가점검 체크리스트」 + AI 챗봇 (★★)</h4>
+    <p><strong>벤치마킹:</strong> 부경대 「청렴·감사 AI 챗봇 + 내부통제 자가점검 체크리스트」 (예산·계약·회계 명시, 1,000천원)</p>
+    <p><strong>재무팀 적용안:</strong>
+      <ul>
+        <li>결산 전 자가점검 체크리스트 10항목(장기채권채무, 미수금, 선수금 등) → 마크다운 문서화</li>
+        <li>Claude Project로 "결산 자가점검 도우미 챗봇" 시범 → 부서별 잔액 입력 시 점검 가이드 자동 응답</li>
+      </ul>
+    </p>
+    <div class="proposal-meta">
+      <div class="meta-item">⏱️ <strong>인건시간:</strong> 24시간</div>
+      <div class="meta-item">💰 <strong>예산:</strong> 비예산</div>
+      <div class="meta-item">🎯 <strong>효과:</strong> 2025 성과(장기 채권·채무 상시점검)의 자동화</div>
+    </div>
+  </div>
+
+  <div class="proposal-card">
+    <h4>제안 ⑥ 「행정 효율화 위원회」급 협의 채널 운영 (★★)</h4>
+    <p><strong>벤치마킹:</strong> 전남대 '사무국장+정보화본부장 공동위원장 행정효율화위원회' / 한경대 'CAIO 협의회'</p>
+    <p><strong>재무팀 적용안 (경량형):</strong>
+      <ul>
+        <li>분기 1회 30분 — 기획예산실·총무인사팀·정보화팀과 "AI 행정 사례 공유 회의"</li>
+        <li>4분면 평가(ROI·업무파급성·적용용이성·우선순위)로 차년도 자동화 과제 1~2개 선정</li>
+      </ul>
+    </p>
+    <div class="proposal-meta">
+      <div class="meta-item">⏱️ <strong>인건시간:</strong> 분기당 2시간</div>
+      <div class="meta-item">💰 <strong>예산:</strong> 회의비 (퇴직연금 사업 회의비 흡수)</div>
+      <div class="meta-item">🎯 <strong>효과:</strong> 동악 AX플랜 실행 거버넌스화</div>
+    </div>
+  </div>
+
+  <div class="proposal-card">
+    <h4>제안 ⑦ 「공문서 서술어 AI 교정」 무예산 도입 — 공주교대 모델 (★★)</h4>
+    <p><strong>벤치마킹:</strong> 공주교대 "AI 활용 공문서 서술어 교정 및 행정 표준화" — <strong>무예산</strong>, "10년 차 국립대 행정 전문가" 페르소나 + 평어→격식체 변환 + '결제↔결재' 부서별 사전</p>
+    <p><strong>재무팀 적용안:</strong> 공주교대 사례를 동국대 재무 표준 용어집(예: '예수금/선수금/미수금', '교비/산학협력단')에 맞춰 커스텀 → Claude Project "재무팀 공문 교정 도우미" 1주일 구축</p>
+    <div class="proposal-meta">
+      <div class="meta-item">⏱️ <strong>인건시간:</strong> 8시간</div>
+      <div class="meta-item">💰 <strong>예산:</strong> 무예산</div>
+      <div class="meta-item">🎯 <strong>효과:</strong> 공문 수정 80% 감소(공주교대 사례)</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>중기 검토 권장 (2027~2028)</h3>
+    <table>
+      <thead><tr><th>제안</th><th>벤치마킹</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td><strong>재무규정 RAG 챗봇 (sLLM 비예산)</strong></td><td>부경대 'AI 규정집'</td><td>nDRIMS·동국대 학칙·재무규정 RAG 학습</td></tr>
+        <tr><td><strong>회계자료 자동 검증 RPA</strong></td><td>전남대 등록금 수납 RPA</td><td>KPI 베이스라인 확보 후 도입</td></tr>
+        <tr><td><strong>재무 데이터 AI 이상 탐지</strong></td><td>전북대 AI 데이터 감사</td><td>업무추진비·거래처 편중 패턴 분석</td></tr>
+        <tr><td><strong>위원회 회의록 AI 자동 요약</strong></td><td>한경대 모델</td><td>재무위원회·이사회 회의록 자동화</td></tr>
+        <tr><td><strong>불용 자산 재활용 ESG</strong></td><td>한경대 PC 재활용</td><td>자산관리팀 협업 가능</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>동국대 재무팀의 차별화 포인트 (보고 시 강조 권고)</h3>
+    <ol style="margin-left:24px; line-height:1.9;">
+      <li><strong>마크다운 + Obsidian + Notion + Claude 풀스택</strong> — 국립대 어느 곳도 이 조합 명시 없음 (가장 AI Readable한 지식 인프라)</li>
+      <li><strong>DX→KX→AX 3단계 로드맵의 KX(지식공유 전환) 개념 정립</strong> — 처음 시도</li>
+      <li><strong>소통→지식→정보→AI 4단 혁신 프레임</strong> — 인프라+사람 동시 접근 (타교는 사람 중심)</li>
+      <li><strong>6,080천원 초저예산 운영</strong> — 거점국립대 평균의 0.1% 수준으로 동일 효과 추구</li>
+    </ol>
+  </div>
+</div>
+
+<!-- Tab 7: KPI -->
+<div class="tab-content" id="kpi">
+  <div class="section">
+    <h2><span class="num">📋</span>권장 보고서 보완안 — "성과 측정 KPI 및 거버넌스" 슬라이드</h2>
+    <p style="color:var(--text-light);">현 동국대 재무팀 중점업무 보고서 6쪽 다음에 1쪽 추가 권장. 아래 표 그대로 삽입 가능.</p>
+    <div style="overflow-x:auto;">
+    <table>
+      <thead>
+        <tr><th>구분</th><th>2025</th><th>2026 목표</th><th>측정 방법</th><th>벤치마크</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>공문/품의 초안 작성 시간</td><td>베이스라인 측정</td><td>△% 단축</td><td>1주 샘플링 비교</td><td>공주교대 66%↓</td></tr>
+        <tr><td>반복 질의 응대 건수</td><td>월 △건</td><td>△% 자동화</td><td>Slack/메일 분석</td><td>한국체대 70%</td></tr>
+        <tr><td>매뉴얼 마크다운 전환율</td><td>△%</td><td>100% (8월)</td><td>문서 카운트</td><td>—</td></tr>
+        <tr><td>부서원 1인 1챗봇 등재</td><td>0건</td><td>5건+</td><td>Notion 라이브러리</td><td>경상대 연 10건</td></tr>
+        <tr><td>AI 활용 가이드라인 배포</td><td>—</td><td>1건 (6월)</td><td>문서 발간</td><td>부산대·경북대</td></tr>
+        <tr><td>분기별 사례집 발간</td><td>—</td><td>4호</td><td>분기 1회</td><td>한국체대</td></tr>
+        <tr><td>행정효율화 협의</td><td>—</td><td>분기 1회</td><td>회의록</td><td>전남대</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="highlight">
+      <strong>활용 팁:</strong> 위 표를 보고서 6쪽 끝에 추가하면, 현재 "2026년 목표값 -" 공란을 채우면서 동시에 25개 국립대 모범사례 벤치마킹을 자연스럽게 보여줄 수 있다.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">🎬</span>결론 — 3줄 요약</h2>
+    <ol style="margin-left:24px; line-height:2; font-size:15px;">
+      <li><strong>동국대 재무팀의 도구·로드맵은 이미 거점국립대 평균을 앞선다.</strong> 자신감을 갖고 보고할 영역.</li>
+      <li><strong>다만 거점국립대들이 표준화하고 있는 ①거버넌스 문서, ②정량 KPI, ③챗봇 가시화 3가지 보완</strong>이 필요. 모두 추가 예산 없이 가능.</li>
+      <li><strong>본 분석에서 발견한 25개 국립대 모범사례 중 7가지를 즉시 반영하면</strong>, 동국대 재무팀의 "AI시대 일하는 방식의 혁신" 사업은 단순 도구 도입을 넘어 <strong>'동국대 AX(동악)플랜의 실행 모범사례'</strong>로 자리매김할 수 있다.</li>
+    </ol>
+  </div>
+</div>
+
+<footer>
+  분석 대상: 2026년 25개 국립대 정부혁신 실행계획 PDF 전수 검토 · 작성: 2026.5.15. (동국대 재무팀)
+</footer>
+
+</div>
+
+<script>
+// Universities data
+const universities = [
+  {name:"부산대", priority:3, tags:["edu","gov","infra"], budget:"35백만 + 21.8억", desc:"AI 마에스트로 21명 양성 (바이브코딩으로 AI 에이전트 직접 개발), Google AI Pro 28,000명 일괄, AI 정책표준 3단 구조", key:"행정직원이 직접 AI 에이전트를 개발하는 상향식 AX 문화 정착 모델"},
+  {name:"경북대", priority:2, tags:["edu","gov","fin"], budget:"9.5억 + 3천만 + 1억", desc:"전 직원 AI 의무 이수(연 2시간), 상용 AI 일괄 도입+보안지침, 연구비 전자결재(JUIC)", key:"K-AI First Campus 브랜딩 + 국산 Solar AI 포함 데이터 주권 강조"},
+  {name:"전남대", priority:3, tags:["fin","auto","edu","gov"], budget:"12억 + 3.5억 + 4억", desc:"AI&RPA 에이젠틱 오토메이션 (등록금 수납 166.7h↓, 연 1,565h↓ KPI), AI for All 8종 무료, 예산회계 분야 AI 교육 명시", key:"재무·행정 AX의 가장 종합적·정량적 모델. 1순위 벤치마킹 대상"},
+  {name:"전북대", priority:3, tags:["fin","auto","gov","infra"], budget:"약 31억 누적", desc:"AI 데이터 감사(이상징후 탐지 90%), 룰 기반 JUMP 통합정보시스템, JUIC 연구비 AI 패턴 분석, 국유재산 GIS·드론 DB", key:"감사·규정·연구비 등 재무·감사 영역에 AI 직접 적용한 최고 모범"},
+  {name:"충남대", priority:3, tags:["fin","auto","gov"], budget:"3.8억 + 비예산", desc:"AI 성과관리 (자연어 분석·미달성 알림 Text-to-SQL), 등록금 24h 디지털 반환(비예산), 멀티 LLM 크레딧", key:"등록금 24시간 운영+디지털 반환은 재무 디지털 전환 표준 모델"},
+  {name:"충북대", priority:3, tags:["auto","edu","infra"], budget:"2.3억 + 800만", desc:"멀티 LLM + 행정업무 챗봇 3단 로드맵('26→'27→'28), 6급 이하 AI 보고서 작성 교육, 교내 문서 전용 벡터DB", key:"행정업무 챗봇을 명시 로드맵에 포함한 거의 유일한 사례"},
+  {name:"경상국립대", priority:3, tags:["edu","auto","infra"], budget:"약 50억 인프라", desc:"직원이 예산·규정·기안 챗봇 직접 제작 → 지식아카이브 등재(연 10건), 5단계 수준별 교육, AI 데이터센터", key:"개인이 자기 업무용 챗봇 만드는 자생적 AI 생태계 모델"},
+  {name:"창원대", priority:3, tags:["edu","gov"], budget:"33백만", desc:"AX 직무역량 교육(VBA·md·Text-to-SQL 바이브코딩), AX 스터디그룹 10팀×100만+포상금, EHKO 노하우 디지털 아카이빙", key:"VBA·md·바이브코딩 등 즉시 적용 가능한 가장 구체적 교육 커리큘럼"},
+  {name:"부산교대", priority:3, tags:["edu","gov"], budget:"43.9백만", desc:"기관 단위 단체구독(83명, 1인당 252천원), 활용범위에 '예산·통계 자료 초안 작성' 명시", key:"부서·개인이 아닌 기관 단위 단체구독으로 비용 효율성 확보 완성형 모델"},
+  {name:"전주교대", priority:2, tags:["edu","infra"], budget:"38.5백만", desc:"멀티 LLM 팩트챗 9개 모델 통합, 종량제 크레딧 90% 비용절감, 학생 1,200명까지 확장", key:"종량제 크레딧 모델로 학생까지 확장한 확장성 있는 모델"},
+  {name:"공주교대", priority:3, tags:["auto","edu"], budget:"657만", desc:"AI 공문서 서술어 교정(무예산), 직원 AI 활용 능력 향상(공문 120→40분, 66% 단축)", key:"무예산·즉시도입형 행정 표준화 모범사례. 1주일 안에 시작 가능"},
+  {name:"부경대", priority:3, tags:["fin","auto","gov"], budget:"1.0백만 + 비예산", desc:"AI 청렴·감사 챗봇 + 예산·계약·회계 자가점검 체크리스트, sLLM 기반 규정집 챗봇(비예산)", key:"재무·계약·회계 분야 AI 챗봇 + 비예산 sLLM 자체 구축 모범"},
+  {name:"한경국립대", priority:3, tags:["gov","fin","auto"], budget:"비예산~5천만", desc:"AX 전략 모형 5대 영역(교육/학생/연구/행·재정/인프라), AIR센터+CAIO 협의회, 위원회 회의록 AI, 불용 PC 재활용", key:"'행·재정 자동화'를 5대 전략 영역에 공식 명시한 거버넌스 모델"},
+  {name:"서울과기대", priority:3, tags:["auto","infra","edu"], budget:"1.3억 + 4천만", desc:"iSSR 요청서·인사배치 자동화 4종, 하이브리드 멀티 LLM 라우팅, AES-256+DLP 보안, 서울대 대학행정교육원 위탁", key:"행정 업무 AI 에이전트의 가장 구체적 설계. 보안 아키텍처도 표준급"},
+  {name:"금오공대", priority:2, tags:["auto","infra","gov"], budget:"18억", desc:"공문·보고서·심의자료 자동 생성 (시간 50%↓, 자동화율 40%, 학사 민원 70% KPI)", key:"정량 KPI가 명확한 행정 AI 종합 청사진 (정책 정당화 근거)"},
+  {name:"한국교통대", priority:2, tags:["auto","infra"], budget:"17.24억 + 1억", desc:"코딩없이 챗봇 제작 + 권한·크레딧 관리 대시보드, NVIDIA H200 GPU Farm", key:"로우코드 챗봇 제작 모델. 부서 자체 FAQ 챗봇 가능"},
+  {name:"한국해양대", priority:2, tags:["auto","edu"], budget:"5,847만 + 비예산", desc:"신한은행 비예산 모바일 통합(헤이영), AI 결합 엑셀/한글/PPT 교육(비예산)", key:"민관협력 비예산 통합 플랫폼 + AI+오피스 교육 모델"},
+  {name:"한국체대", priority:2, tags:["auto","edu"], budget:"50백만 + 9천만 + 7,300만", desc:"학교 규정·지침 RAG 기반 LLM 챗봇 (응답 정확도 85%, 자동 응답 70%), AI 스마트코칭", key:"RAG 기반 규정 검색의 정량 KPI 명확. 재무 규정에 응용 가능"},
+  {name:"서울교대", priority:2, tags:["edu","gov"], budget:"3,500만 + 4,300천", desc:"AI·디지털 학습 그룹 (교수·직원·학생 3분할), 직원 AI 도구·자동화 학습조직", key:"학습조직 모델로 재무팀 AX 학습조직 설계에 직접 응용 가능"},
+  {name:"광주교대", priority:2, tags:["edu","gov"], budget:"1천만", desc:"AI 직장교육 (보고서·데이터·민원 직무 연계형), 워라하 데이", key:"직무 연계형 AI 교육의 가장 명확한 시나리오"},
+  {name:"대구교대", priority:1, tags:["edu","infra"], budget:"2.1억", desc:"네이티브형 융합 AI인재 양성, 피지컬 AI 교육 인프라", key:"교대 특성상 학사 중심, 재무팀 직접 적용은 제한적"},
+  {name:"한밭대", priority:1, tags:["edu","auto"], budget:"비공개", desc:"배리어프리 무인증명발급기, I-DAP 산학연 통합 플랫폼", key:"RISE 사업 중심으로 재무·총무 AI 적용은 약함"},
+  {name:"순천대", priority:2, tags:["edu"], budget:"36.4백만", desc:"중간 실무자(7~8급) AI 활용 교육 + 부서별 전파 교육 체계", key:"직급 타깃팅 + 전파교육 모델. 재무팀 직급 구조와 정확히 일치"},
+  {name:"경국대", priority:3, tags:["auto","edu","infra"], budget:"약 5억", desc:"AI+매크로 반복업무 자동화, 생성형 AI로 엑셀 자동화 교육, Data Lake 구축, 초과근무·출장비 부당수령 점검", key:"재무 결산·정산에 즉시 적용 가능한 가장 실무 중심 커리큘럼"},
+  {name:"춘천교대", priority:2, tags:["gov","edu"], budget:"1천만", desc:"찾아가는 AI 리터러시 출장 컨설팅, AI 윤리 가이드라인('민감정보 입력 금지')", key:"민감정보 입력 금지 가이드라인은 재무 데이터에 즉시 차용 가능"}
+];
+
+const tagLabels = {fin:"재무·회계", auto:"행정자동화", edu:"교육·역량", gov:"거버넌스", infra:"인프라"};
+
+function renderUniversities() {
+  const search = document.getElementById('search').value.toLowerCase();
+  const filterPriority = document.getElementById('filter-priority').value;
+  const filterTag = document.getElementById('filter-tag').value;
+
+  const filtered = universities.filter(u => {
+    const matchSearch = !search || u.name.toLowerCase().includes(search) || u.desc.toLowerCase().includes(search) || u.key.toLowerCase().includes(search);
+    const matchPriority = filterPriority === 'all' || u.priority == filterPriority;
+    const matchTag = filterTag === 'all' || u.tags.includes(filterTag);
+    return matchSearch && matchPriority && matchTag;
+  });
+
+  // Sort by priority desc
+  filtered.sort((a,b) => b.priority - a.priority);
+
+  const grid = document.getElementById('uni-grid');
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted);">검색 결과가 없습니다.</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(u => `
+    <div class="uni-card">
+      <div class="uni-card-header">
+        <div>
+          <div class="uni-name">${u.name}</div>
+          <div class="uni-budget">예산: ${u.budget}</div>
+        </div>
+        <span class="priority priority-${u.priority}">${'★'.repeat(u.priority)}</span>
+      </div>
+      <div class="uni-tags">
+        ${u.tags.map(t => `<span class="tag ${t}">${tagLabels[t]}</span>`).join('')}
+      </div>
+      <div class="uni-desc">${u.desc}</div>
+      <div class="uni-key">💡 ${u.key}</div>
+    </div>
+  `).join('');
+}
+
+// Tab switching
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
+
+// Filters
+document.getElementById('search').addEventListener('input', renderUniversities);
+document.getElementById('filter-priority').addEventListener('change', renderUniversities);
+document.getElementById('filter-tag').addEventListener('change', renderUniversities);
+
+// Initial render
+renderUniversities();
+</script>
+
+</body>
+</html>
